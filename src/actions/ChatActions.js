@@ -1,5 +1,30 @@
 import firebase from '../FirebaseConnection';
 
+export const getChatList = ( userUid ) => {
+    return (dispatch) => {
+
+        firebase.database().ref('users').child(userUid).child('chats').on('value', (snapshot)=>{
+
+            let chats = [];
+
+            snapshot.forEach((childItem)=>{
+                chats.push({
+                    key:childItem.key,
+                    title:childItem.val().title
+                });
+            });
+
+            dispatch({
+                type:'setChatList',
+                payload:{
+                    chats:chats
+                }
+            });
+
+        });
+    };
+};
+
 export const getContactList = ( userUid ) => {
 	
 	return(dispatch) => {
@@ -42,24 +67,45 @@ export const createChat = (userUid1, userUid2) => {
            // Associando aos Envolvidos
            let chatId = newChat.key;
 
-           firebase.database().ref('users').child(userUid1).child('chats')
+           firebase.database().ref('users').child(userUid2).once('value').then((snapshot)=>{
+
+                firebase.database().ref('users').child(userUid1).child('chats')
                 .child(chatId).set({
-                    id:chatId
-           });
-           firebase.database().ref('users').child(userUid2).child('chats')
-                .child(chatId).set({
-                    id:chatId
+                    id:chatId,
+                    title:snapshot.val().name
+                });
+
            });
 
+           firebase.database().ref('users').child(userUid1).once('value').then((snapshot)=>{
+
+                firebase.database().ref('users').child(userUid2).child('chats')
+                .child(chatId).set({
+                    id:chatId,
+                    title:snapshot.val().name
+           });
+
+        });
+           
+           
         dispatch({
             type:'setActiveChat',
             payload:{
-                chatid:chatId
+                chatId:chatId
             }
         });
 
     }
 }; 
+
+export const setActiveChat = (chatId) => {
+    return {
+        type:'setActiveChat',
+        payload:{
+            chatid:chatId
+        }
+    };
+};
 
 /*export const SignInAction = (email, password) => {
     

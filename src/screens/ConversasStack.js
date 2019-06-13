@@ -7,10 +7,10 @@ import ConversasList from './ConversasList';
 
 const ConversasStackNavigator = createStackNavigator({
 	ConversasList:{
-		screen:ConversasList,
+		screen:ConversasList
 	},
 	ConversaInterna:{
-		screen:ConversaInterna,
+		screen:ConversaInterna
 	}
 });
 

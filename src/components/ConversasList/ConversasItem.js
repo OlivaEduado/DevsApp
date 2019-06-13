@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 
-export default class ContatoItem extends Component {
+export default class ConversasItem extends Component {
 	
 	constructor(props) {
 		super(props);
@@ -9,14 +9,14 @@ export default class ContatoItem extends Component {
 
 	render() {
 		return(
-			<TouchableHighlight style={ContatoItemStyles.buttonArea} onPress={this.props.onPress}>
+			<TouchableHighlight style={ConversasItemStyle.buttonArea} onPress={this.props.onPress}>
 				<Text>{this.props.data.name}</Text>
 			</TouchableHighlight>
 		);
 	}
 }
 
-const ContatoItemStyles = StyleSheet.create({
+const ConversasItemStyle = StyleSheet.create({
 	buttonArea:{
 		height:40,
 		flex:1,
